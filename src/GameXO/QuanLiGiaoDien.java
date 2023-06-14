@@ -4,40 +4,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.spi.TimeZoneNameProvider;
 
 public class QuanLiGiaoDien extends JFrame {
 
-    private static final int rows=30;
+    private static final int rows=25;
     private int A[][]= new int[rows+10][rows+10];
-    private int weight=1500;
+    private int weight=1300;
     private int i,j,d=0;
+    private JButton[][] buttons= new JButton[rows+10][rows+10];
 
 QuanLiGiaoDien(){
+    JPanel mainMenu = new JPanel();
+    JButton newGame= new JButton("New Game");
+    JButton exit= new JButton("Exit");
+    JLabel luotDanh= new JLabel("X danh truoc");
+    FlowLayout flowLayout= new FlowLayout();
+    flowLayout.setHgap(20);
+    mainMenu.add(luotDanh);
+    mainMenu.add(newGame);
+    mainMenu.add(exit);
+    mainMenu.setLayout(flowLayout);
+
+    add(mainMenu,BorderLayout.NORTH);
+    newGame.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for (i=1;i<=rows;i++)
+                for (j=1;j<=rows;j++){
+                    buttons[i][j].setText("");
+                }
+        }
+    });
+    exit.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    });
     JPanel jp= new JPanel(new GridLayout(rows,rows));
     for (i=1;i<=rows;i++)
     for (j=1;j<=rows;j++){
         Button lb= new Button();
-
+        buttons[i][j]= lb.getButton();
+        //lb.getButton().setFont
         lb.setRow(i);
         lb.setColumn(j);
+        buttons[lb.getRow()][lb.getColumn()]= lb.getButton();
         lb.getButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (lb.getButton().getText().equals("")) {
                     if (d % 2 == 0) {
+                        luotDanh.setText("O danh");
                         lb.getButton().setText("X");
                         A[lb.getRow()][lb.getColumn()] = 2;
+
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "X win");
-                            System.exit(0);
+                            //System.exit(0);
                         }
                     } else {
+                        luotDanh.setText("X danh");
                         lb.getButton().setText("O");
                         A[lb.getRow()][lb.getColumn()] = 1;
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "O win");
-                            System.exit(0);
+                            //System.exit(0);
                         }
                     }
                     ;
@@ -108,9 +142,5 @@ if ((d1+d2>=4)&&(d3<2))return true;
     if ((d1+d2>=4)&&(d3<2)) return true;
 
 return false;
-
 }
-
-
-
 }
