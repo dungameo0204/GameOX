@@ -7,12 +7,16 @@ import java.awt.event.ActionListener;
 import java.util.spi.TimeZoneNameProvider;
 
 public class QuanLiGiaoDien extends JFrame {
-
+// kích thước của bàn cờ
     private static final int rows=25;
+    //mảng 2 chiều, để lưu các ô đã đánh(X là 2, O là 1)
     private int A[][]= new int[rows+10][rows+10];
     private int weight=1300;
+    //biến d để lưu số bước đã đánh(d chẵn thì X đánh, lẻ thì O đánh)
     private int i,j,d=0;
+    //lưu lại các giá trị Button đã khởi tạo, phục vụ chức năng reset lại ván cờ
     private JButton[][] buttons= new JButton[rows+10][rows+10];
+    //lưu vị trí ô vừa mới đánh, phục vụ chức năng đánh lại
     private Return kiemtradanhlai =new Return();
 QuanLiGiaoDien(){
     JPanel mainMenu = new JPanel();
@@ -29,6 +33,7 @@ QuanLiGiaoDien(){
     mainMenu.setLayout(flowLayout);
 
     add(mainMenu,BorderLayout.NORTH);
+    //làm sạch bàn cờ
     newGame.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -40,12 +45,14 @@ QuanLiGiaoDien(){
                 }
         }
     });
+    //thoát chương trình
     exit.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     });
+    //làm sạch ô vừa mới đánh
     danhlai.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -58,19 +65,22 @@ QuanLiGiaoDien(){
         }
     });
     JPanel jp= new JPanel(new GridLayout(rows,rows));
+    //khởi tạo bàn cờ
     for (i=1;i<=rows;i++)
     for (j=1;j<=rows;j++){
         Button lb= new Button();
+        //lưu các nút vừa khởi tạo vào mảng 2 chiều
         buttons[i][j]= lb.getButton();
-        //lb.getButton().setFont
+        //luư vị trí của các nút
         lb.setRow(i);
         lb.setColumn(j);
-        buttons[lb.getRow()][lb.getColumn()]= lb.getButton();
+       // gắn chức năng điền X, O vào bàn cờ
         lb.getButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (lb.getButton().getText().equals("")) {
                     if (d % 2 == 0) {
+                        //lưu nút vừa đánh
                         kiemtradanhlai.setX(lb.getRow());
                         kiemtradanhlai.setY(lb.getColumn());
                         luotDanh.setText("O danh");
@@ -114,6 +124,7 @@ QuanLiGiaoDien(){
 
 }
     int k,d1,d2,i1,j1,d3;
+//kiem tra chien thang
 public boolean checks(int row,int column){
 //kt chieu doc
  k=row-1;d1=0;d2=0;d3=0;

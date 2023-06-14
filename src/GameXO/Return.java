@@ -1,5 +1,5 @@
 package GameXO;
-
+//class này để lưu lại vị trí ô vừa mới đánh (phục vụ cho chức năng đánh lại)
 public class Return {
     private int x;
     private int y;

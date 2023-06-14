@@ -1,7 +1,7 @@
 package GameXO;
 
 import javax.swing.*;
-
+// class này là 1 ô trong bàn cờ, gồm 1 button và vị trí của nó(xác định bởi hàng và cột)
 public class Button {
     public Button() {
         this.button= new JButton("");
