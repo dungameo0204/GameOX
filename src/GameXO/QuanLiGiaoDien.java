@@ -13,16 +13,18 @@ public class QuanLiGiaoDien extends JFrame {
     private int weight=1300;
     private int i,j,d=0;
     private JButton[][] buttons= new JButton[rows+10][rows+10];
-
+    private Return kiemtradanhlai =new Return();
 QuanLiGiaoDien(){
     JPanel mainMenu = new JPanel();
     JButton newGame= new JButton("New Game");
     JButton exit= new JButton("Exit");
+    JButton danhlai= new JButton("Return");
     JLabel luotDanh= new JLabel("X danh truoc");
     FlowLayout flowLayout= new FlowLayout();
     flowLayout.setHgap(20);
     mainMenu.add(luotDanh);
     mainMenu.add(newGame);
+    mainMenu.add(danhlai);
     mainMenu.add(exit);
     mainMenu.setLayout(flowLayout);
 
@@ -33,6 +35,8 @@ QuanLiGiaoDien(){
             for (i=1;i<=rows;i++)
                 for (j=1;j<=rows;j++){
                     buttons[i][j].setText("");
+                    d=0;
+                    JLabel luotDanh= new JLabel("X danh truoc");
                 }
         }
     });
@@ -40,6 +44,17 @@ QuanLiGiaoDien(){
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
+        }
+    });
+    danhlai.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (d>0) {
+                buttons[kiemtradanhlai.getX()][kiemtradanhlai.getY()].setText("");
+                if (luotDanh.getText().equals("O danh")) luotDanh.setText("X danh");
+                else  luotDanh.setText("O danh");
+                d--;
+            }
         }
     });
     JPanel jp= new JPanel(new GridLayout(rows,rows));
@@ -56,21 +71,29 @@ QuanLiGiaoDien(){
             public void actionPerformed(ActionEvent e) {
                 if (lb.getButton().getText().equals("")) {
                     if (d % 2 == 0) {
+                        kiemtradanhlai.setX(lb.getRow());
+                        kiemtradanhlai.setY(lb.getColumn());
                         luotDanh.setText("O danh");
                         lb.getButton().setText("X");
                         A[lb.getRow()][lb.getColumn()] = 2;
 
+
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "X win");
+
                             //System.exit(0);
                         }
                     } else {
+                        kiemtradanhlai.setX(lb.getRow());
+                        kiemtradanhlai.setY(lb.getColumn());
                         luotDanh.setText("X danh");
                         lb.getButton().setText("O");
                         A[lb.getRow()][lb.getColumn()] = 1;
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "O win");
+
+
                             //System.exit(0);
                         }
                     }
