@@ -1,15 +1,15 @@
 package GameXO;
 //class này để lưu lại vị trí ô vừa mới đánh (phục vụ cho chức năng đánh lại)
-public class Return {
+public class ToaDoVuaDanh {
     private int x;
     private int y;
 
-    public Return(int x, int y) {
+    public ToaDoVuaDanh(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Return() {
+    public ToaDoVuaDanh() {
     }
 
     public int getX() {

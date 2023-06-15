@@ -4,45 +4,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.spi.TimeZoneNameProvider;
 
 public class QuanLiGiaoDien extends JFrame {
 // kích thước của bàn cờ
-    private static final int rows=25;
+    private final int rows=23;
+    private final int columns=33;
     //mảng 2 chiều, để lưu các ô đã đánh(X là 2, O là 1)
-    private int A[][]= new int[rows+10][rows+10];
-    private int weight=1300;
+    private int A[][]= new int[rows+5][columns+5];
+    private int weight=2000;
     //biến d để lưu số bước đã đánh(d chẵn thì X đánh, lẻ thì O đánh)
     private int i,j,d=0;
     //lưu lại các giá trị Button đã khởi tạo, phục vụ chức năng reset lại ván cờ
-    private JButton[][] buttons= new JButton[rows+10][rows+10];
+    private JButton[][] buttons= new JButton[rows+5][columns+5];
     //lưu vị trí ô vừa mới đánh, phục vụ chức năng đánh lại
-    private Return kiemtradanhlai =new Return();
+    private ToaDoVuaDanh kiemtradanhlai =new ToaDoVuaDanh();
 QuanLiGiaoDien(){
     JPanel mainMenu = new JPanel();
     JButton newGame= new JButton("New Game");
     JButton exit= new JButton("Exit");
-    JButton danhlai= new JButton("Return");
+    JButton danhlai= new JButton("Undo");
     JLabel luotDanh= new JLabel("X danh truoc");
     FlowLayout flowLayout= new FlowLayout();
-    flowLayout.setHgap(20);
+    flowLayout.setHgap(30);
     mainMenu.add(luotDanh);
     mainMenu.add(newGame);
     mainMenu.add(danhlai);
     mainMenu.add(exit);
     mainMenu.setLayout(flowLayout);
+    //mainMenu.setBackground(Color.BLUE);
 
     add(mainMenu,BorderLayout.NORTH);
+    JPanel jp= new JPanel(new GridLayout(rows,columns));
     //làm sạch bàn cờ
+
     newGame.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            for (i=1;i<=rows;i++)
-                for (j=1;j<=rows;j++){
-                    buttons[i][j].setText("");
-                    d=0;
-                    JLabel luotDanh= new JLabel("X danh truoc");
-                }
+            lamSachBanCo();
         }
     });
     //thoát chương trình
@@ -57,18 +55,18 @@ QuanLiGiaoDien(){
         @Override
         public void actionPerformed(ActionEvent e) {
             if (d>0) {
-                buttons[kiemtradanhlai.getX()][kiemtradanhlai.getY()].setText("");
+                buttons[kiemtradanhlai.getX()][kiemtradanhlai.getY()].setLabel("");
                 if (luotDanh.getText().equals("O danh")) luotDanh.setText("X danh");
                 else  luotDanh.setText("O danh");
                 d--;
             }
         }
     });
-    JPanel jp= new JPanel(new GridLayout(rows,rows));
+
     //khởi tạo bàn cờ
     for (i=1;i<=rows;i++)
-    for (j=1;j<=rows;j++){
-        Button lb= new Button();
+    for (j=1;j<=columns;j++){
+        ChessBox lb= new ChessBox();
         //lưu các nút vừa khởi tạo vào mảng 2 chiều
         buttons[i][j]= lb.getButton();
         //luư vị trí của các nút
@@ -78,31 +76,31 @@ QuanLiGiaoDien(){
         lb.getButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (lb.getButton().getText().equals("")) {
+                if (lb.getButton().getLabel().equals("")) {
                     if (d % 2 == 0) {
                         //lưu nút vừa đánh
                         kiemtradanhlai.setX(lb.getRow());
                         kiemtradanhlai.setY(lb.getColumn());
                         luotDanh.setText("O danh");
-                        lb.getButton().setText("X");
+                        lb.getButton().setLabel("X");
                         A[lb.getRow()][lb.getColumn()] = 2;
 
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "X win");
-
+lamSachBanCo();
                             //System.exit(0);
                         }
                     } else {
                         kiemtradanhlai.setX(lb.getRow());
                         kiemtradanhlai.setY(lb.getColumn());
                         luotDanh.setText("X danh");
-                        lb.getButton().setText("O");
+                        lb.getButton().setLabel("O");
                         A[lb.getRow()][lb.getColumn()] = 1;
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "O win");
-
+                            lamSachBanCo();
 
                             //System.exit(0);
                         }
@@ -124,6 +122,14 @@ QuanLiGiaoDien(){
 
 }
     int k,d1,d2,i1,j1,d3;
+    private void lamSachBanCo(){
+        for (int i=1;i<=rows;i++)
+            for (int j=1;j<=rows;j++){
+                buttons[i][j].setLabel("");
+                d=0;
+                JLabel luotDanh= new JLabel("X danh truoc");
+            }
+    }
 //kiem tra chien thang
 public boolean checks(int row,int column){
 //kt chieu doc
@@ -145,7 +151,7 @@ if ((d1+d2>=4)&&(d3<2))return true;
     }
     if (A[row][k]!=0) d3++;
     k=column+1;
-    while ((k<=rows)&&(A[row][k]==A[row][column])){
+    while ((k<=columns)&&(A[row][k]==A[row][column])){
         d2++;k++;
     }
     if (A[row][k]!=0) d3++;
@@ -157,7 +163,7 @@ if ((d1+d2>=4)&&(d3<2))return true;
     }
     if (A[i1][j1]!=0) d3++;
     i1=row+1;j1=column+1;
-    while ((i1<=rows)&&(j1<=rows)&&(A[i1][j1]==A[row][column])){
+    while ((i1<=rows)&&(j1<=columns)&&(A[i1][j1]==A[row][column])){
         d2++;i1++;j1++;
     }
     if (A[i1][j1]!=0) d3++;
@@ -169,7 +175,7 @@ if ((d1+d2>=4)&&(d3<2))return true;
     }
     if (A[i1][j1]!=0) d3++;
     i1=row-1;j1=column+1;
-    while ((i1>0)&&(j1<=rows)&&(A[i1][j1]==A[row][column])){
+    while ((i1>0)&&(j1<=columns)&&(A[i1][j1]==A[row][column])){
         d2++;i1--;j1++;
     }
     if (A[i1][j1]!=0) d3++;

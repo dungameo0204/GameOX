@@ -1,11 +1,11 @@
 package GameXO;
-
 import javax.swing.*;
+import java.awt.*;
 // class này là 1 ô trong bàn cờ, gồm 1 button và vị trí của nó(xác định bởi hàng và cột)
-public class Button {
-    public Button() {
+public class ChessBox {
+    public ChessBox() {
         this.button= new JButton("");
-
+        this.button.setBackground(Color.WHITE);
     }
 
     private int row;
