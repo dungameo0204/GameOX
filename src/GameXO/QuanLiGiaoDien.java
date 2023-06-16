@@ -35,19 +35,24 @@ QuanLiGiaoDien(){
 
     add(mainMenu,BorderLayout.NORTH);
     JPanel jp= new JPanel(new GridLayout(rows,columns));
-    //làm sạch bàn cờ
 
     newGame.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            lamSachBanCo();
+            for (int i2=1;i2<=rows;i2++)
+                for (int j2=1;j2<=rows;j2++){
+                    buttons[i2][j2].setLabel("");
+                A[i2][j2]=0;
+                }
+            d=0;
+            luotDanh.setText("X danh truoc");
         }
     });
     //thoát chương trình
     exit.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.exit(0);
+            new FeedBack();
         }
     });
     //làm sạch ô vừa mới đánh
@@ -56,6 +61,7 @@ QuanLiGiaoDien(){
         public void actionPerformed(ActionEvent e) {
             if (d>0) {
                 buttons[kiemtradanhlai.getX()][kiemtradanhlai.getY()].setLabel("");
+                A[kiemtradanhlai.getX()][kiemtradanhlai.getY()]=0;
                 if (luotDanh.getText().equals("O danh")) luotDanh.setText("X danh");
                 else  luotDanh.setText("O danh");
                 d--;
@@ -88,8 +94,13 @@ QuanLiGiaoDien(){
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "X win");
-lamSachBanCo();
-                            //System.exit(0);
+                            for (int i2=1;i2<=rows;i2++)
+                                for (int j2=1;j2<=rows;j2++){
+                                    buttons[i2][j2].setLabel("");
+                                    A[i2][j2]=0;}
+                            d=-1;
+                            luotDanh.setText("X danh truoc");
+System.out.println(d);
                         }
                     } else {
                         kiemtradanhlai.setX(lb.getRow());
@@ -100,9 +111,13 @@ lamSachBanCo();
 
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "O win");
-                            lamSachBanCo();
-
-                            //System.exit(0);
+                            for (int i2=1;i2<=rows;i2++)
+                                for (int j2=1;j2<=rows;j2++){
+                                    buttons[i2][j2].setLabel("");
+                                    A[i2][j2]=0;}
+                            d=-1;
+                            luotDanh.setText("X danh truoc");
+                            System.out.println(d);
                         }
                     }
                     ;
@@ -122,14 +137,7 @@ lamSachBanCo();
 
 }
     int k,d1,d2,i1,j1,d3;
-    private void lamSachBanCo(){
-        for (int i=1;i<=rows;i++)
-            for (int j=1;j<=rows;j++){
-                buttons[i][j].setLabel("");
-                d=0;
-                JLabel luotDanh= new JLabel("X danh truoc");
-            }
-    }
+
 //kiem tra chien thang
 public boolean checks(int row,int column){
 //kt chieu doc
