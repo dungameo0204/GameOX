@@ -3,6 +3,7 @@ package GameXO;
 public class Main {
     public static void main(String[] args) {
         new QuanLiGiaoDien();
+        System.out.println("hehe");
 
     }
 }
