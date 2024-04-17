@@ -40,9 +40,9 @@ QuanLiGiaoDien(){
         @Override
         public void actionPerformed(ActionEvent e) {
             for (int i2=1;i2<=rows;i2++)
-                for (int j2=1;j2<=rows;j2++){
+                for (int j2=1;j2<=columns;j2++){
                     buttons[i2][j2].setLabel("");
-                A[i2][j2]=0;
+                    A[i2][j2]=0;
                 }
             d=0;
             luotDanh.setText("X danh truoc");
@@ -95,12 +95,11 @@ QuanLiGiaoDien(){
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "X win");
                             for (int i2=1;i2<=rows;i2++)
-                                for (int j2=1;j2<=rows;j2++){
+                                for (int j2=1;j2<=columns;j2++){
                                     buttons[i2][j2].setLabel("");
                                     A[i2][j2]=0;}
                             d=-1;
                             luotDanh.setText("X danh truoc");
-System.out.println(d);
                         }
                     } else {
                         kiemtradanhlai.setX(lb.getRow());
@@ -112,12 +111,12 @@ System.out.println(d);
                         if (checks(lb.getRow(), lb.getColumn()) == true) {
                             JOptionPane.showMessageDialog(null, "O win");
                             for (int i2=1;i2<=rows;i2++)
-                                for (int j2=1;j2<=rows;j2++){
+                                for (int j2=1;j2<=columns;j2++){
                                     buttons[i2][j2].setLabel("");
                                     A[i2][j2]=0;}
                             d=-1;
                             luotDanh.setText("X danh truoc");
-                            System.out.println(d);
+                
                         }
                     }
                     ;
@@ -145,7 +144,7 @@ public boolean checks(int row,int column){
 while ((k>0)&&(A[k][column]==A[row][column])){
     d1++;k--;
     }
-    if(A[k][column]!=0 )d3++;
+    if(A[k][column]!=0 ) d3++;
     k=row+1;
 while ((k<=rows)&&(A[k][column]==A[row][column])){
         d2++;k++;
